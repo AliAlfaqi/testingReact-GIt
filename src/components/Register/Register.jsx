@@ -41,9 +41,10 @@ const Register = () => {
     function submitDataToApi(e) {
         e.preventDefault();
         setIsLoading(true)
-        let validate = validateRegisterForm()
-        if (validate.errors) {
-            setErrorList(validate.errors.details)
+        let validation = validateRegisterForm()
+        console.log(validation);
+        if (validation.error) {
+            setErrorList(validation.error.details)
             setIsLoading(false)
         }
         else {
@@ -65,7 +66,14 @@ const Register = () => {
 
     return (
         <>
-            { }
+            {errorList.map((err , index) => {
+                if(err.context.label == 'password'){
+                    return <div key={index} className="alert alert-danger my-2">Password Invalid</div>
+                }
+                else {
+                    return <div key={index} className="alert alert-danger my-2">{err.message}</div>
+                }
+            })}
             <form onSubmit={submitDataToApi}>
                 <label htmlFor="first_name">First Name:</label>
                 <input onChange={getUserData} type="text" name='first_name' className='form-control my-2' />
